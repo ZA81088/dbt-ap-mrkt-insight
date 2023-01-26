@@ -1,0 +1,15 @@
+{{ 
+    config (materialized = 'incremental', schema = 'TRANSACTION_DATA', 
+    unique_key = ['SALESORGCODE', 'DISTRIBUTIONCHANNELCODE', 'CUSTOMERID', 'MATERIALID', 'VERSION', 'VERSIONLAG', 'UPLOADYEAR', 'CALENDARYEARMONTH']
+    )
+}}
+
+SELECT MACHINELEARNINGFORECAST, UNCONSTRAINFORECAST,SALESORGCODE, DISTRIBUTIONCHANNELCODE, CUSTOMERID, MATERIALID, VERSION, VERSIONLAG, UPLOADYEAR, 
+CALENDARYEARMONTH FROM APITDBPRD.STAGING.SAP_UNCONSTRAINED_FORECAST
+
+{% if is_incremental() %}
+
+  -- this filter will only be applied on an incremental run
+  where CALENDARYEARMONTH > (select max(calendaryearmonth) from {{ this }})
+
+{% endif %}
