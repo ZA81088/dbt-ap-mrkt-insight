@@ -1,9 +1,0 @@
-{{ 
-    config (materialized = 'table', schema = 'INT_TRANSACTION_DAT' )
-}}
-
-WITH CTE AS (
-SELECT * FROM APITDBDEV.STAGING.EDW_TRANSACTIONAL_SALESACTUAL
-)
-
-SELECT * FROM CTE
