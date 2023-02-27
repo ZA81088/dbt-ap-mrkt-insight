@@ -6,6 +6,6 @@
             strategy = 'timestamp', updated_at = 'last_modified_time', ) 
 }}
 
-select * from  APITDBDEV.STAGING.RTM_LEADTIME
+select * from  {{ env_var('DBT_SOURCE_DATABASE', 'APITDBDEV') }}.STAGING.RTM_LEADTIME
 
 {% endsnapshot %}
